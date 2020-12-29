@@ -23,20 +23,25 @@ def create_table(conn, create_table_sql):
 def main():
     database = r"pythonsqlite.db"
 
-    sql_create_users_table = """ CREATE TABLE IF NOT EXISTS users (
+    sql_create_planos_table = """ CREATE TABLE IF NOT EXISTS planos (
                                         id integer PRIMARY KEY,
-                                        username text NOT NULL,
-                                        full_name text NOT NULL,
-                                        email text NOT NULL,
-                                        hashed_password text NOT NULL,
-                                        disabled BOOLEAN NOT NULL CHECK (disabled IN (0,1))
+                                        descricao text NOT NULL,
+                                        minutos integer NOT NULL
                                     ); """
+
+    sql_create_tarifas_table = """CREATE TABLE IF NOT EXISTS tarifas (
+                                    id integer PRIMARY KEY,
+                                    origem text NOT NULL,
+                                    destino text NOT NULL,
+                                    valor float NOT NULL
+                                );"""
 
     conn = create_connection(database)
 
     if conn is not None:
-        create_table(conn, sql_create_users_table)
+        create_table(conn, sql_create_planos_table)
 
+        create_table(conn, sql_create_tarifas_table)
     else:
         print("Erro! não foi possivel criar a conexão com o bd.")
 

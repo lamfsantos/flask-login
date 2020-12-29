@@ -4,14 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
-flask-sqlalchemy = "*"
-jwt = "*"
-python-dotenv = "*"
-pydantic = "*"
-python-jose = {extras = ["cryptography"], version = "*"}
-passlib = {extras = ["bcrypt"], version = "*"}
-fastapi = "*"
+pyjwt = "*"
 
 [dev-packages]
 
