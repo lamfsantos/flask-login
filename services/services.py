@@ -4,29 +4,31 @@ from repositories import user as user_repo
 from functools import wraps
 from models.user import UserInDB, User
 from werkzeug.security import check_password_hash,generate_password_hash
+from configs import general as configs
 
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
 
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
 
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 401
 
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+        #try:
+        data = jwt.decode(token, configs.SECRET_KEY, algorithms="HS256")
 
-            #roda uma query pra consultar o cara no banco
-            #current_user = User.query.filter_by(public_id=data['public_id']).first()
-            current_user = user_repo.find_by_username(data['username'])
+        #roda uma query pra consultar o cara no banco
+        #current_user = User.query.filter_by(public_id=data['public_id']).first()
+        current_user = user_repo.find_by_username(data['username'])
 
-            if len(current_user) == 0:
-                return jsonify({'message' : 'Token is invalid!'}), 401
-        except:
+        if len(current_user) == 0:
             return jsonify({'message' : 'Token is invalid!'}), 401
+        # except:
+        #     print('cccccccccccc')
+        #     return jsonify({'message' : 'Token is invalid!'}), 401
 
         return f(current_user, *args, **kwargs)
 

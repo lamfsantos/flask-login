@@ -19,14 +19,15 @@ function login(){
 
   $.ajax(settings).done(function (response) {
     console.log(response);
-    document.cookie = "access_token="+response["access_token"];
-    document.cookie = "token_type="+response["token_type"];
+    //document.cookie = "access_token="+response["access_token"];
+    //document.cookie = "token_type="+response["token_type"];
+    document.cookie = "token="+response["token"];
 
     var settings = {
       "url": "/logged",
       "method": "GET",
       "headers": {
-        "Authorization": response["token_type"] + " " + response["access_token"]
+        "Authorization": response["token"]
       }
     }
 
