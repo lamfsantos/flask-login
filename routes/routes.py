@@ -3,6 +3,7 @@ from configs import general as configs
 from services.services import token_required
 from services import services
 from werkzeug.security import check_password_hash,generate_password_hash
+from models.user import User
 import jwt
 import datetime
 
@@ -43,19 +44,29 @@ def logged(current_user):
         test = "logged :)",
     )
 
-@app.route('/savenewuser', methods=['POST'])
-@token_required
-def create_user(current_user):
+@routes_blueprint.route('/savenewuser', methods=['POST'])
+def create_user():
     # if not current_user.admin:
     #     return jsonify({'message' : 'Cannot perform that function!'})
-    #
-    # data = request.get_json()
-    #
-    # hashed_password = generate_password_hash(data['password'], method='sha256')
-    #
-    # new_user = User(public_id=str(uuid.uuid4()), name=data['name'], password=hashed_password, admin=False)
-    # db.session.add(new_user)
-    # db.session.commit()
-    #
-    # return make_response('User created', 201, {})
-    return ''
+
+    data = dict(request.form)
+
+
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+
+    print(data)
+    print(hashed_password)
+
+    try:
+        #new_user = User(username=data['username'], password=data['password'], email=data['email'], full_name=data['full_name'])
+        services.insert_user(username=data['username'], password=hashed_password, email=data['email'], full_name=data['full_name'])
+    except Exception as e:
+        print(e)
+
+    return make_response('User created', 201, {})
+
+@routes_blueprint.route("/register", methods=['GET'])
+def register():
+    return render_template(
+        'register.html'
+    )

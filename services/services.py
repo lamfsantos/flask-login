@@ -59,3 +59,20 @@ def list_to_dict(users_list: list):
 
 def compare_password_hash(password_hash: str, password_unsalted: str):
     return check_password_hash(password_hash, password_unsalted)
+
+#def insert_user(user: User):
+def insert_user(username: str, password: str, email: str, full_name: str):
+    try:
+        user_repo.insert(username, password, email, full_name)
+    except Exception as e:
+        print("insert error: " + str(e))
+
+# def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+#     to_encode = data.copy()
+#     if expires_delta:
+#         expire = datetime.utcnow() + expires_delta
+#     else:
+#         expire = datetime.utcnow() + timedelta(minutes=15)
+#     to_encode.update({"exp": expire})
+#     encoded_jwt = jwt.encode(to_encode, configs.SECRET_KEY, algorithm=configs.ALGORITHM)
+#     return encoded_jwt
