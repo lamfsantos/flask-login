@@ -56,10 +56,7 @@ def list_to_dict(users_list: list):
         }
     #users_dict['create_access_token'] = {'name': 'luiz'}
     return users_dict
-
-def compare_password_hash(password_hash: str, password_unsalted: str):
-    return check_password_hash(password_hash, password_unsalted)
-
+    
 #def insert_user(user: User):
 def insert_user(username: str, password: str, email: str, full_name: str):
     try:
